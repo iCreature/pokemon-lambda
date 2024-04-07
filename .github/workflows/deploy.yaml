@@ -25,7 +25,7 @@ jobs:
           aws lambda update-function-code \
             --function-name pokemon \
             --zip-file fileb://pokemon.zip \
-            --region ${{ secrets.AWS_REGION }}
+            --region ${{ secrets.AWS_REGION }} 
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
