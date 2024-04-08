@@ -30,14 +30,14 @@ def fetch_pokemon_details(pokemon_id):
     else:
         return {"error": "Failed to fetch data from PokeAPI."}
 
-def lambda_handler(event, context):
-    if event.get('path') == '/summary' and event.get('httpMethod') == 'GET':
+ddef lambda_handler(event, context):
+    if event.get('path') == '/pokemon/summary' and event.get('httpMethod') == 'GET':
         pokemon_list = fetch_pokemon_list()
         return {
             'statusCode': 200,
             'body': json.dumps(pokemon_list)
         }
-    elif event.get('path', '').startswith('/details/') and event.get('httpMethod') == 'GET':
+    elif event.get('path', '').startswith('/pokemon/details/') and event.get('httpMethod') == 'GET':
         pokemon_id = event['path'].split('/')[-1]
         pokemon_details = fetch_pokemon_details(pokemon_id)
         return {
