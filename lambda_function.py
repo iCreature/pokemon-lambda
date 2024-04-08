@@ -1,11 +1,13 @@
 import json
-import requests
+import http.client
 
 def fetch_pokemon_list():
-    url = "https://pokeapi.co/api/v2/pokemon?limit=100&offset=0"
-    response = requests.get(url)
-    if response.status_code == 200:
-        pokemon_list = response.json()["results"]
+    conn = http.client.HTTPSConnection("pokeapi.co")
+    conn.request("GET", "/api/v2/pokemon?limit=100&offset=0")
+    response = conn.getresponse()
+    if response.status == 200:
+        data = response.read()
+        pokemon_list = json.loads(data)["results"]
         for pokemon in pokemon_list:
             pokemon_url = pokemon["url"]
             pokemon_id = int(pokemon_url.split("/")[-2])
@@ -15,10 +17,12 @@ def fetch_pokemon_list():
         return {"error": "Failed to fetch data from PokeAPI."}
 
 def fetch_pokemon_details(pokemon_id):
-    url = f"https://pokeapi.co/api/v2/pokemon/{pokemon_id}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        pokemon_data = response.json()
+    conn = http.client.HTTPSConnection("pokeapi.co")
+    conn.request("GET", f"/api/v2/pokemon/{pokemon_id}")
+    response = conn.getresponse()
+    if response.status == 200:
+        data = response.read()
+        pokemon_data = json.loads(data)
         details = {
             "stat": pokemon_data["stats"],
             "weight": pokemon_data["weight"],
